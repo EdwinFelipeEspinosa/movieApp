@@ -11,7 +11,7 @@ Toda acción se inicia con una "instrucción" desde la base de datos. Esta es su
 ```
   MODULO.CONTENEDOR.ACCION[CODIGO_LANG]| PARÁMETROS
      |         |          |          |             |
-     |         |          |          |             └─> 1|0|1|| (Editable|Requerido|Visible|...)
+     |         |          |          |             └─> 1|0|1|| (Editable|Requerido|oculto|...)
      |         |          |          |
      |         |          |          └─> Coincide con data-lang (MAYÚSCULAS)
      |         |          |
