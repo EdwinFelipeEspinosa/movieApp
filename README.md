@@ -27,107 +27,84 @@ Toda acción se inicia con una "instrucción" desde la base de datos. Esta es su
 ---
 
 ### Parte 1: Patrones para Componentes Generales (Acción `HTML`)
-
-> [!NOTE]
-> Estos patrones se usan para cualquier elemento que **no** sea un campo de formulario (textos, títulos, botones, enlaces, etc.).
+_Estos patrones se usan para cualquier elemento que no sea un campo de formulario (textos, títulos, botones, enlaces, etc.)._
 
 #### **Patrón 1.1: Elemento Simple y Autónomo**
-* **Uso:** Un botón, un título, un badge, o cualquier elemento que se gestiona como una sola unidad.
-
-**Plano HTML**
 ```html
-<a id="id_unico" data-lang="CODIGO_LANG">
-  Inscríbete
-</a>
-```
-
-**Instrucción BD (Clave)**
-```
-...HTML[CODIGO_LANG]|1|0|1...
+<a id="id_unico" data-lang="CODIGO_LANG">Inscríbete</a>
 ```
 
 #### **Patrón 1.2: Elemento Agrupado (Etiqueta + Valor)**
-* **Uso:** Para mostrar un dato donde solo la etiqueta se traduce, pero se necesita ocultar el bloque completo.
-
-**Plano HTML**
 ```html
 <div id="material_id_hijo">
-  <span id="id_hijo" data-lang="CODIGO_LANG">
-    Solicitado
-  </span>: ${una_fecha}
+  <span id="id_hijo" data-lang="CODIGO_LANG">Solicitado</span>: ${una_fecha}
 </div>
 ```
-
-**Instrucción BD (Clave)**
-```
-...HTML[CODIGO_LANG]|1|0|1...
-```
-
 ---
 ### Parte 2: Patrones para Campos de Formulario (Acción `LABEL`)
-
 > [!IMPORTANT]
-> Estos patrones son **exclusivos para elementos de formulario** (`input`, `select`, etc.). Usar la acción `LABEL` en la BD es **obligatorio** para activar la gestión de estado (`required`, `editable`).
+> **Exclusivo para `<input>`, `<select>`, etc.** Usar la acción `LABEL` es obligatorio para activar la gestión de estado (`required`, `editable`). La coincidencia de IDs entre el contenedor y el campo es obligatoria.
 
-> **Regla Crítica:** La coincidencia de IDs entre el contenedor (`material_...`) y el campo es obligatoria.
-
-#### **Patrón 2.1: Campo de Formulario (Ej: Select)**
-* **Uso:** Para cualquier campo de entrada (`input`, `select`, etc.) que necesite una etiqueta, validación y control de visibilidad.
-
-**Plano HTML**
 ```html
 <div id="material_tip_certificado" class="md-form">
-  <select id="tip_certificado" data-lang="SELECT_TITLE_CERTIFICADO" required>
-  </select>
-  <label for="tip_certificado">
-    Título del Certificado
-  </label>
+  <select id="tip_certificado" data-lang="SELECT_TITLE_CERTIFICADO" required></select>
+  <label for="tip_certificado">Título del Certificado</label>
 </div>
 ```
-
-**Instrucción BD (Clave)**
-```
-...LABEL[SELECT_TITLE_CERTIFICADO]|1|1|1...
-(Editable|Requerido|Oculto)
-```
-
 ---
-
 ### Parte 3: Catálogo de Acciones Adicionales
-
-Aquí se listan otras acciones que el script puede ejecutar sobre los elementos definidos en los patrones anteriores.
+_Estas acciones se aplican a los elementos definidos en los patrones anteriores._
 
 #### **Atributos de Elemento**
-
-| Acción | Descripción | Plano HTML Requerido |
-| :--- | :--- | :--- |
-| **`HREF`** | Modifica el destino de un enlace `<a>`. | `<a id="..." data-lang="...">` |
-| **`SRC`** | Cambia la fuente de una imagen `<img>`. | `<img id="..." data-lang="...">` |
-| **`PLACEHOLDER`** | Asigna el texto de ejemplo en un campo `<input>`.| `<input id="..." data-lang="...">` |
-| **`SEARCHABLE`** | Asigna el texto "Buscar..." en un `<select>` con buscador. | `<select id="..." data-lang="...">` |
+| Acción | Descripción |
+| :--- | :--- |
+| **`HREF`** | Modifica el destino de un enlace `<a>`. |
+| **`SRC`** | Cambia la fuente de una imagen `<img>`. |
+| **`PLACEHOLDER`**| Asigna el texto de ejemplo en un `<input>`.|
+| **`SEARCHABLE`** | Asigna el texto "Buscar..." en un `<select>` con buscador. |
 
 #### **Ayuda y Popovers**
+| Acción | Descripción |
+| :--- | :--- |
+| **`HLPTIT`** | Asigna el **título** a un popover de ayuda. |
+| **`HLPCON`** | Asigna el **contenido** a un popover de ayuda. |
+| **`HLPDET`** | Añade un texto de ayuda **detallado** debajo del campo. |
 
-| Acción | Descripción | Plano HTML Requerido |
-| :--- | :--- | :--- |
-| **`HLPTIT`** | Asigna el **título** a un popover de ayuda. | `<button id="..." data-lang="...">` |
-| **`HLPCON`** | Asigna el **contenido** a un popover de ayuda. | `<button id="..." data-lang="...">` |
-| **`HLPDET`** | Añade un texto de ayuda **detallado** debajo del campo. | `<div id="material_..."><input id="..." data-lang="..."></div>` |
+---
+### Parte 4: Aplicando Estilos Dinámicos (Acciones de Color, Fondo, etc.)
 
-#### **Estilos CSS Dinámicos**
+Existen dos tipos de acciones de estilo: directas y por asociación.
 
-* **Uso:** Aplica estilos CSS en línea a cualquier elemento que siga los patrones. El `Plano HTML` es cualquiera de los definidos en la Parte 1 o 2.
-* **Acciones Disponibles:**
-    * `COLOR` (color de texto)
-    * `BGCOLOR` (color de fondo)
-    * `BORDERCOLOR` (color de borde)
-    * `BORDERTCOLOR` (color de borde superior)
-    * `BORDERLCOLOR` (color de borde izquierdo)
-    * `BORDERRCOLOR` (color de borde derecho)
-    * `BGIMAGE` (imagen de fondo)
-    * `BGGRADIENT` (fondo con gradiente)
-    * `LABELCOLOR` (color de la `<label>` asociada a un campo)
-    * `ICONCOLOR` (color del `<i>` asociado a un campo)
+#### **4.1 Estilos Directos**
+Estas acciones se aplican **directamente sobre la etiqueta que lleva el atributo `data-lang`**.
+
+* **Acciones:** `COLOR`, `BGCOLOR`, `BORDERCOLOR`, `BORDERTCOLOR`, `BORDERLCOLOR`, `BORDERRCOLOR`, `BGIMAGE`, `BGGRADIENT`.
+* **Ejemplo:**
+  * **HTML:** `<h2 id="titulo" data-lang="TITULO_PRINCIPAL">Mi Título</h2>`
+  * **Clave BD:** `...COLOR[TITULO_PRINCIPAL]|...`
+  * **Resultado:** El texto del `<h2>` cambiará de color.
+
+#### **4.2 Estilos por Asociación**
+Estas acciones usan la etiqueta con `data-lang` como referencia para **buscar y estilizar un elemento relacionado**.
+
+* **Acción: `LABELCOLOR`**
+  * **Propósito:** Cambia el color de la etiqueta `<label>` asociada a un campo.
+  * **Mecanismo:** Busca la `<label>` cuyo atributo `for` coincida con el `id` del campo que tiene el `data-lang`.
+  * **Plano HTML:** Requiere el Patrón de Formulario (Parte 2).
+
+* **Acción: `ICONCOLOR`**
+  * **Propósito:** Cambia el color de un ícono `<i>` asociado a un elemento.
+  * **Mecanismo:** El script busca el ícono en este orden: 1. Dentro del elemento, 2. Al lado del elemento, o 3. Dentro de su contenedor `material_...`.
+  * **Plano HTML (Ejemplo):**
+    ```html
+    <div id="material_mi_campo" class="md-form">
+      <i class="far fa-user prefix"></i>
+      <input id="mi_campo" data-lang="MI_CAMPO_LANG" type="text">
+      <label for="mi_campo">Usuario</label>
+    </div>
+    ```
+  * **Clave BD:** `...ICONCOLOR[MI_CAMPO_LANG]|...`
+  * **Resultado:** El ícono `<i class="far fa-user">` cambiará de color.
 
 ---
 ### Apéndice: Reglas Fundamentales y Diagnóstico
