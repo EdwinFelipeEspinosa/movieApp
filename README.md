@@ -18,7 +18,7 @@ Toda acción se inicia con una "instrucción" desde la base de datos. Esta es su
      |         |          |          |
      |         |          |          └─> Coincide con data-lang (MAYÚSCULAS)
      |         |          |
-     |         |          └─> HTML (General) o LABEL (Formularios)
+     |         |          └─> HTML, LABEL, HREF, COLOR, etc. (Ver catálogo)
      |         |
      |         └─> Coincide con el id/data-container principal
      |
