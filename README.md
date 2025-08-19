@@ -11,7 +11,10 @@ Toda acción se inicia con una "instrucción" desde la base de datos. Esta es su
 ```
   MODULO.CONTENEDOR.ACCION[CODIGO_LANG]| PARÁMETROS
      |         |          |          |             |
-     |         |          |          |             └─> 1|0|1|| (Editable|Requerido|oculto|...)
+     |         |          |          |             └─> 1|0|1|| (Editable|Requerido|Oculto|...)
+     |         |          |          |                  - Editable: 1=Sí, 0=No (deshabilitado)
+     |         |          |          |                  - Requerido: 1=Sí, 0=No
+     |         |          |          |                  - Oculto: 1=Sí, 0=No (visible)
      |         |          |          |
      |         |          |          └─> Coincide con data-lang (MAYÚSCULAS)
      |         |          |
@@ -31,34 +34,26 @@ Toda acción se inicia con una "instrucción" desde la base de datos. Esta es su
 #### **Patrón 1.1: Elemento Simple y Autónomo**
 * **Uso:** Un botón, un título, un badge, o cualquier elemento que se gestiona como una sola unidad.
 
-**Plano HTML**
-```html
-<a id="id_unico" data-lang="CODIGO_LANG">
-  Inscríbete
-</a>
-```
-
-**Instrucción BD (Clave)**
-```
-...HTML[CODIGO_LANG]|1|0|1...
-```
+| Plano HTML | Instrucción BD (Clave) |
+| :--- | :--- |
+| ```html
+| <a id="boton_nuevo_123" data-lang="BOTON_NUEVO_LANG">
+|   Inscríbete
+| </a>
+| ``` | `...HTML[BOTON_NUEVO_LANG]|1|0|1...` |
 
 #### **Patrón 1.2: Elemento Agrupado (Etiqueta + Valor)**
 * **Uso:** Para mostrar un dato donde solo la etiqueta se traduce, pero se necesita ocultar el bloque completo.
 
-**Plano HTML**
-```html
-<div id="material_id_hijo">
-  <span id="id_hijo" data-lang="CODIGO_LANG">
-    Solicitado
-  </span>: ${una_fecha}
-</div>
-```
-
-**Instrucción BD (Clave)**
-```
-...HTML[CODIGO_LANG]|1|0|1...
-```
+| Plano HTML | Instrucción BD (Clave) |
+| :--- | :--- |
+| ```html
+| <div id="material_fec_solicitud_123">
+|   <span id="fec_solicitud_123" data-lang="FEC_SOLICITUD_LANG">
+|     Solicitado
+|   </span>: ${una_fecha}
+| </div>
+| ``` | `...HTML[FEC_SOLICITUD_LANG]|1|0|1...` |
 
 ---
 ### Parte 2: Patrones para Campos de Formulario (Acción `LABEL`)
@@ -71,22 +66,17 @@ Toda acción se inicia con una "instrucción" desde la base de datos. Esta es su
 #### **Patrón 2.1: Campo de Formulario (Ej: Select)**
 * **Uso:** Para cualquier campo de entrada (`input`, `select`, etc.) que necesite una etiqueta, validación y control de visibilidad.
 
-**Plano HTML**
-```html
-<div id="material_tip_certificado" class="md-form">
-  <select id="tip_certificado" data-lang="SELECT_TITLE_CERTIFICADO" required>
-  </select>
-  <label for="tip_certificado">
-    Título del Certificado
-  </label>
-</div>
-```
-
-**Instrucción BD (Clave)**
-```
-...LABEL[SELECT_TITLE_CERTIFICADO]|1|1|1...
-(Editable|Requerido|Visible)
-```
+| Plano HTML (Basado en tu ejemplo corregido) | Instrucción BD (Clave) |
+| :--- | :--- |
+| ```html
+| <div id="material_tip_certificado" class="col-md-11">
+|   <select id="tip_certificado" data-lang="SELECT_TITLE_CERTIFICADO" required>
+|   </select>
+|   <label for="tip_certificado" class="mdb-main-label">
+|     Título del Certificado
+|   </label>
+| </div>
+| ``` | `...LABEL[SELECT_TITLE_CERTIFICADO]|1|1|1...` <br> `(Editable|Requerido|Oculto)` |
 
 ---
 ### Apéndice: Reglas Fundamentales y Diagnóstico
