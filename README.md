@@ -92,6 +92,44 @@ Toda acción se inicia con una "instrucción" desde la base de datos. Esta es su
 ```
 
 ---
+
+### Parte 3: Catálogo de Acciones Adicionales
+
+Aquí se listan otras acciones que el script puede ejecutar sobre los elementos definidos en los patrones anteriores.
+
+#### **Atributos de Elemento**
+
+| Acción | Descripción | Plano HTML Requerido |
+| :--- | :--- | :--- |
+| **`HREF`** | Modifica el destino de un enlace `<a>`. | `<a id="..." data-lang="...">` |
+| **`SRC`** | Cambia la fuente de una imagen `<img>`. | `<img id="..." data-lang="...">` |
+| **`PLACEHOLDER`** | Asigna el texto de ejemplo en un campo `<input>`.| `<input id="..." data-lang="...">` |
+| **`SEARCHABLE`** | Asigna el texto "Buscar..." en un `<select>` con buscador. | `<select id="..." data-lang="...">` |
+
+#### **Ayuda y Popovers**
+
+| Acción | Descripción | Plano HTML Requerido |
+| :--- | :--- | :--- |
+| **`HLPTIT`** | Asigna el **título** a un popover de ayuda. | `<button id="..." data-lang="...">` |
+| **`HLPCON`** | Asigna el **contenido** a un popover de ayuda. | `<button id="..." data-lang="...">` |
+| **`HLPDET`** | Añade un texto de ayuda **detallado** debajo del campo. | `<div id="material_..."><input id="..." data-lang="..."></div>` |
+
+#### **Estilos CSS Dinámicos**
+
+* **Uso:** Aplica estilos CSS en línea a cualquier elemento que siga los patrones. El `Plano HTML` es cualquiera de los definidos en la Parte 1 o 2.
+* **Acciones Disponibles:**
+    * `COLOR` (color de texto)
+    * `BGCOLOR` (color de fondo)
+    * `BORDERCOLOR` (color de borde)
+    * `BORDERTCOLOR` (color de borde superior)
+    * `BORDERLCOLOR` (color de borde izquierdo)
+    * `BORDERRCOLOR` (color de borde derecho)
+    * `BGIMAGE` (imagen de fondo)
+    * `BGGRADIENT` (fondo con gradiente)
+    * `LABELCOLOR` (color de la `<label>` asociada a un campo)
+    * `ICONCOLOR` (color del `<i>` asociado a un campo)
+
+---
 ### Apéndice: Reglas Fundamentales y Diagnóstico
 
 > [!WARNING]
