@@ -25,26 +25,38 @@ Toda acción se inicia con una "instrucción" desde la base de datos. Esta es su
 
 ### Parte 1: Patrones para Componentes Generales (Acción `HTML`)
 
-Estos patrones se usan para cualquier elemento que **no** sea un campo de formulario (textos, títulos, botones, enlaces, etc.). La acción recomendada en la BD es `HTML`.
+> [!NOTE]
+> Estos patrones se usan para cualquier elemento que **no** sea un campo de formulario (textos, títulos, botones, enlaces, etc.).
 
 #### **Patrón 1.1: Elemento Simple y Autónomo**
 * **Uso:** Un botón, un título, un badge, o cualquier elemento que se gestiona como una sola unidad.
 
 | Plano HTML | Instrucción BD (Clave) |
 | :--- | :--- |
-| ```html <a id="boton_nuevo_123" data-lang="BOTON_NUEVO_LANG"> Inscríbete </a> ``` | `...HTML[BOTON_NUEVO_LANG]|1|0|1...` |
+| ```html
+| <a id="boton_nuevo_123" data-lang="BOTON_NUEVO_LANG">
+|   Inscríbete
+| </a>
+| ``` | `...HTML[BOTON_NUEVO_LANG]|1|0|1...` |
 
 #### **Patrón 1.2: Elemento Agrupado (Etiqueta + Valor)**
 * **Uso:** Para mostrar un dato donde solo la etiqueta se traduce, pero se necesita ocultar el bloque completo.
 
 | Plano HTML | Instrucción BD (Clave) |
 | :--- | :--- |
-| ```html <div id="material_fec_solicitud_123"> <span id="fec_solicitud_123" data-lang="FEC_SOLICITUD_LANG"> Solicitado </span>: ${una_fecha} </div> ``` | `...HTML[FEC_SOLICITUD_LANG]|1|0|1...` |
+| ```html
+| <div id="material_fec_solicitud_123">
+|   <span id="fec_solicitud_123" data-lang="FEC_SOLICITUD_LANG">
+|     Solicitado
+|   </span>: ${una_fecha}
+| </div>
+| ``` | `...HTML[FEC_SOLICITUD_LANG]|1|0|1...` |
 
 ---
 ### Parte 2: Patrones para Campos de Formulario (Acción `LABEL`)
 
-Estos patrones son **exclusivos para elementos de formulario** (`input`, `select`, etc.). Usar la acción `LABEL` en la BD es **obligatorio** para activar la gestión de estado (`required`, `editable`).
+> [!IMPORTANT]
+> Estos patrones son **exclusivos para elementos de formulario** (`input`, `select`, etc.). Usar la acción `LABEL` en la BD es **obligatorio** para activar la gestión de estado (`required`, `editable`).
 
 > **Nota:** La clave para que esto funcione es la relación entre el `id` del campo y el `id` del `div` contenedor (`material_...`).
 
@@ -53,20 +65,30 @@ Estos patrones son **exclusivos para elementos de formulario** (`input`, `select
 
 | Plano HTML (Basado en tu ejemplo corregido) | Instrucción BD (Clave) |
 | :--- | :--- |
-| ```html <div id="material_tip_certificado" class="col-md-11"> <select id="tip_certificado" data-lang="SELECT_TITLE_CERTIFICADO" required class="mdb-select"> </select> <label for="tip_certificado" class="mdb-main-label"> Título del Certificado </label> </div> ``` | `...LABEL[SELECT_TITLE_CERTIFICADO]|1|1|1...` <br> `(Editable|Requerido|Visible)` |
+| ```html
+| <div id="material_tip_certificado" class="col-md-11">
+|   <select id="tip_certificado" data-lang="SELECT_TITLE_CERTIFICADO" required class="mdb-select">
+|   </select>
+|   <label for="tip_certificado" class="mdb-main-label">
+|     Título del Certificado
+|   </label>
+| </div>
+| ``` | `...LABEL[SELECT_TITLE_CERTIFICADO]|1|1|1...` <br> `(Editable|Requerido|Visible)` |
 
 ---
 ### Apéndice: Reglas Fundamentales y Diagnóstico
 
-#### **Reglas de Oro (Resumen)**
-1.  **Contenedor Principal:** El `div` de la vista/sección siempre debe tener `id` y `data-container` idénticos.
-2.  **Elemento Objetivo:** El tag con `data-lang` siempre debe tener un `id` único.
-3.  **Mayúsculas/Minúsculas:**
-    * `data-lang="MI_CODIGO"` debe coincidir con el `[MI_CODIGO]` de la BD. (Convención: Mayúsculas).
-    * `id="mi_id"` debe ser consistente. El wrapper (`material_mi_id`) se construye a partir de él. (Convención: Minúsculas).
+> [!WARNING]
+> #### **Checklist de Errores Comunes: "Mi elemento no se oculta, ¿por qué?"**
+> * **`[ ]` ¿El contenedor principal (`<div id="..." data-container="...">`) tiene ambos atributos?** (Regla #1)
+> * **`[ ]` ¿El elemento que lleva `data-lang` tiene su propio `id` único?** (Regla #2)
+> * **`[ ]` Si es un elemento agrupado o de formulario, ¿el `id` del padre es exactamente `material_` + el `id` del hijo?**
+> * **`[ ]` ¿Estás usando la acción `LABEL` para un campo de formulario?**
 
-#### **Checklist de Errores Comunes: "Mi elemento no se oculta, ¿por qué?"**
-* **`[ ]` ¿El contenedor principal (`<div id="..." data-container="...">`) tiene ambos atributos?** (Regla #1)
-* **`[ ]` ¿El elemento que lleva `data-lang` tiene su propio `id` único?** (Regla #2)
-* **`[ ]` Si es un elemento agrupado, ¿el `id` del padre es exactamente `material_` + el `id` del hijo?** (Caso 1.2 y 2.1)
-* **`[ ]` ¿Estás usando la acción `LABEL` para un campo de formulario?**
+> [!TIP]
+> #### **Reglas de Oro (Resumen)**
+> 1.  **Contenedor Principal de la Vista:** El `div` que engloba toda la sección (ej. `<div id="CERF21_VIEW1">`) siempre debe tener `id` y `data-container` idénticos.
+> 2.  **Elemento Objetivo:** El tag con `data-lang` siempre debe tener un `id` único (especialmente en bucles).
+> 3.  **Mayúsculas/Minúsculas:**
+>     * `data-lang="MI_CODIGO"` debe coincidir con el `[MI_CODIGO]` de la BD (Convención: Mayúsculas).
+>     * `id="mi_id"` debe ser consistente. El wrapper (`material_mi_id`) se construye a partir de él (Convención: Minúsculas).
